@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Skills - Prakash Portfolio{% endblock %}
+
+{% block content %}
+<style>
+/* ================= SKILLS SECTION ================= */
+.skills-section {
+    padding: 4rem 2rem;
+}
+
+.skills-container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+/* ================= TITLE ================= */
+.section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-title h2 {
+    font-size: 2.4rem;
+    font-weight: 800;
+}
+
+.section-title p {
+    font-size: 1rem;
+    color: var(--text-gray);
+}
+
+/* ================= CATEGORY ================= */
+.skill-category {
+    margin-bottom: 3rem;
+}
+
+.skill-category h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--red);
+    margin-bottom: 1.2rem;
+    border-left: 4px solid var(--red);
+    padding-left: 0.8rem;
+}
+
+/* ================= GRID ================= */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+}
+
+/* ================= SKILL ITEM ================= */
+.skill-item {
+    background: #f5f5f5;
+    padding: 0.9rem 1rem;
+    text-align: center;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: 0.3s ease;
+    cursor: default;
+}
+
+.skill-item:hover {
+    background: #000;
+    color: #fff;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .section-title h2 {
+        font-size: 2rem;
+    }
+
+    .skills-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+}
+</style>
+
+<section class="skills-section">
+    <div class="skills-container">
+        <div class="section-title">
+            <h2>My Skills</h2>
+            <p>Technologies and tools I work with</p>
+        </div>
+
+        {% for category, skill_list in skills.items() %}
+        <div class="skill-category">
+            <h3>{{ category }}</h3>
+            <div class="skills-grid">
+                {% for skill in skill_list %}
+                <div class="skill-item">{{ skill }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

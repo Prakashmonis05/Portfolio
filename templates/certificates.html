@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Certificates - Prakash Portfolio{% endblock %}
+
+{% block content %}
+<style>
+/* ================= CERTIFICATES SECTION ================= */
+.certificates-section {
+    padding: 4rem 2rem;
+}
+
+.certificates-container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-title h2 {
+    font-size: 2.4rem;
+    font-weight: 800;
+}
+
+.section-title p {
+    color: var(--text-gray);
+}
+
+/* ================= GRID ================= */
+.cert-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+/* ================= CARD ================= */
+.cert-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.cert-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.cert-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.cert-content {
+    padding: 1.5rem;
+}
+
+.cert-content h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+}
+
+.cert-meta {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    margin-bottom: 0.8rem;
+}
+
+.cert-desc {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.2rem;
+}
+
+/* ================= BUTTON ================= */
+.cert-btn {
+    display: inline-block;
+    padding: 0.6rem 1.6rem;
+    border-radius: 30px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 2px solid var(--red);
+    color: var(--red);
+    transition: 0.3s;
+}
+
+.cert-btn:hover {
+    background: var(--red);
+    color: #fff;
+}
+</style>
+
+<section class="certificates-section">
+    <div class="certificates-container">
+        <div class="section-title">
+            <h2>Certifications</h2>
+            <p>Professional credentials and verified achievements</p>
+        </div>
+
+        <div class="cert-grid">
+            {% for cert in certificates %}
+            <div class="cert-card">
+                <img src="{{ cert.image }}" alt="{{ cert.title }}">
+                <div class="cert-content">
+                    <h3>{{ cert.title }}</h3>
+                    <div class="cert-meta">
+                        {{ cert.issuer }} • {{ cert.year }}
+                    </div>
+                    <p class="cert-desc">
+                        {{ cert.description }}
+                    </p>
+                    <a href="{{ cert.credential }}" target="_blank" class="cert-btn">
+                        View Credential
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

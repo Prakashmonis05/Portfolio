@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}About - Prakash Portfolio{% endblock %}
+
+{% block content %}
+<style>
+/* ================= ABOUT SECTION ================= */
+.about-section {
+    padding: 4rem 2rem;
+}
+
+.about-container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+/* ================= TITLE ================= */
+.section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-title h2 {
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 0.6rem;
+}
+
+.section-title p {
+    font-size: 1rem;
+    color: var(--text-gray);
+}
+
+/* ================= CONTENT ================= */
+.about-content {
+    max-width: 900px;
+    margin: auto;
+}
+
+.about-content p {
+    font-size: 1rem;
+    color: var(--text-gray);
+    line-height: 1.8;
+    margin-bottom: 1.4rem;
+}
+
+.about-content strong {
+    color: var(--red);
+    font-weight: 600;
+}
+
+/* ================= HIGHLIGHT BOX ================= */
+.about-highlight {
+    margin-top: 2.5rem;
+    padding: 1.8rem;
+    background: #f5f5f5;
+    border-left: 4px solid var(--red);
+    border-radius: 8px;
+}
+
+.about-highlight h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.6rem;
+}
+
+.about-highlight p {
+    margin: 0;
+}
+
+/* ================= CTA ================= */
+.about-cta {
+    margin-top: 2.5rem;
+    text-align: center;
+}
+
+.about-cta a {
+    display: inline-block;
+    padding: 0.8rem 2.2rem;
+    background: var(--red);
+    color: #fff;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.about-cta a:hover {
+    background: #cc0000;
+    transform: translateY(-2px);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .section-title h2 {
+        font-size: 2rem;
+    }
+
+    .about-content p {
+        font-size: 0.95rem;
+    }
+}
+</style>
+
+<section class="about-section">
+    <div class="about-container">
+        <div class="section-title">
+            <h2>About Me</h2>
+            <p>Get to know me better</p>
+        </div>
+
+        <div class="about-content">
+            <p>
+                Hello! I'm <strong>Prakash</strong>, a passionate full-stack developer with a strong interest in
+                building practical, scalable, and efficient digital solutions. I enjoy turning complex
+                problems into clean, maintainable code.
+            </p>
+
+            <p>
+                My journey into programming started with curiosity and evolved into hands-on experience
+                with technologies like <strong>Python</strong>, <strong>Flask</strong>,
+                <strong>React</strong>, and modern backend architectures. I place a strong emphasis on
+                <strong>data structures, algorithms</strong>, and writing performance-oriented code.
+            </p>
+
+            <p>
+                Beyond development, I actively explore new technologies, follow industry trends,
+                and continuously refine my problem-solving skills. I believe consistent learning is
+                the key to long-term growth in software engineering.
+            </p>
+
+            <div class="about-highlight">
+                <h3>What I Focus On</h3>
+                <p>
+                    Clean architecture, scalable systems, strong fundamentals, and delivering
+                    real-world value through technology.
+                </p>
+            </div>
+
+            <div class="about-cta">
+                <a href="{{ url_for('contact') }}">Let’s Work Together</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

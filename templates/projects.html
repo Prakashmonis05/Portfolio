@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}Projects - Prakash Portfolio{% endblock %}
+
+{% block content %}
+<style>
+/* ================= PROJECTS SECTION ================= */
+.projects-section {
+    padding: 4rem 2rem;
+}
+
+.projects-container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+/* ================= TITLE ================= */
+.section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-title h2 {
+    font-size: 2.4rem;
+    font-weight: 800;
+}
+
+.section-title p {
+    color: var(--text-gray);
+    font-size: 1rem;
+}
+
+/* ================= PROJECT CARD ================= */
+.project-block {
+    margin-bottom: 4rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.project-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+}
+
+/* ================= IMAGE SLIDER ================= */
+.project-slider {
+    position: relative;
+    width: 100%;
+    height: 420px;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+}
+
+.project-slider-track {
+    display: flex;
+    width: calc(100% * 4);
+    animation: slideImages 16s infinite;
+}
+
+.project-slide {
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.project-slide img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+}
+
+/* Auto slide animation */
+@keyframes slideImages {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(0); }
+    30% { transform: translateX(-100%); }
+    55% { transform: translateX(-100%); }
+    60% { transform: translateX(-200%); }
+    85% { transform: translateX(-200%); }
+    100% { transform: translateX(-300%); }
+}
+
+/* ================= DESCRIPTION ================= */
+.project-description {
+    font-size: 1rem;
+    color: var(--text-gray);
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+}
+
+/* ================= TECH STACK ================= */
+.tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.5rem;
+}
+
+.tech-tag {
+    background: #f5f5f5;
+    padding: 0.4rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* ================= ACTIONS ================= */
+.project-actions {
+    display: flex;
+    gap: 0.8rem;
+}
+
+.project-btn {
+    padding: 0.7rem 1.8rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: 0.3s;
+}
+
+.project-btn-primary {
+    background: var(--red);
+    color: #fff;
+}
+
+.project-btn-primary:hover {
+    background: #cc0000;
+}
+
+.project-btn-secondary {
+    border: 2px solid #000;
+    color: #000;
+}
+
+.project-btn-secondary:hover {
+    background: #000;
+    color: #fff;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .project-slider,
+    .project-slide img {
+        height: 260px;
+    }
+
+    .project-title {
+        font-size: 1.5rem;
+    }
+
+    .project-actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+</style>
+
+<section class="projects-section">
+    <div class="projects-container">
+        <div class="section-title">
+            <h2>My Projects</h2>
+            <p>Detailed view of my work and implementations</p>
+        </div>
+
+        {% for project in projects %}
+        <div class="project-block">
+            <h3 class="project-title">{{ project.title }}</h3>
+
+            <!-- Image Slider -->
+            <div class="project-slider">
+                <div class="project-slider-track">
+                    {% for image in project.images %}
+                    <div class="project-slide">
+                        <img src="{{ image }}" alt="{{ project.title }}">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <p class="project-description">
+                {{ project.description }}
+            </p>
+
+            <div class="tech-stack">
+                {% for tech in project.technologies %}
+                <span class="tech-tag">{{ tech }}</span>
+                {% endfor %}
+            </div>
+
+            <div class="project-actions">
+                <a href="{{ project.github }}" target="_blank" class="project-btn project-btn-secondary">
+                    View Code
+                </a>
+                <a href="{{ project.demo }}" target="_blank" class="project-btn project-btn-primary">
+                    Live Demo
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
