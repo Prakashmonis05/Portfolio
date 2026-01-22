@@ -85,31 +85,3 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         }
     });
 });
-
-// const menuToggle = document.getElementById('menu-toggle');
-// const navMenu = document.getElementById('nav-menu');
-
-// if (menuToggle && navMenu) {
-//     menuToggle.addEventListener('click', function(e) {
-//         e.preventDefault();
-//         e.stopPropagation();
-//         navMenu.classList.toggle('active');
-//         console.log('Menu toggled:', navMenu.classList.contains('active'));
-//     });
-
-//     // Close menu when clicking on a link
-//     const navLinks = navMenu.querySelectorAll('a');
-//     navLinks.forEach(link => {
-//         link.addEventListener('click', () => {
-//             navMenu.classList.remove('active');
-//         });
-//     });
-
-//     // Close menu when clicking outside
-//     document.addEventListener('click', function(e) {
-//         if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
-//             navMenu.classList.remove('active');
-//         }
-//     });
-// }
-

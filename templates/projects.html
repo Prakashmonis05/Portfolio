@@ -47,7 +47,6 @@
 .project-slider {
     position: relative;
     width: 100%;
-    height: 420px;
     overflow: hidden;
     border-radius: 12px;
     margin-bottom: 1.5rem;
@@ -55,30 +54,80 @@
 
 .project-slider-track {
     display: flex;
-    width: calc(100% * 4);
-    animation: slideImages 16s infinite;
+    transition: transform 0.5s ease-in-out;
 }
 
 .project-slide {
-    width: 100%;
-    flex-shrink: 0;
+    flex: 0 0 100%;
+    min-width: 100%;
 }
 
 .project-slide img {
     width: 100%;
     height: 420px;
-    object-fit: cover;
+    object-fit: contain;
+    background: #f5f5f5;
+    padding: 10px;
+    border-radius: 12px;
 }
 
-/* Auto slide animation */
-@keyframes slideImages {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(0); }
-    30% { transform: translateX(-100%); }
-    55% { transform: translateX(-100%); }
-    60% { transform: translateX(-200%); }
-    85% { transform: translateX(-200%); }
-    100% { transform: translateX(-300%); }
+/* Slider Controls */
+.slider-controls {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.slider-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.slider-dot.active {
+    background: var(--red, #ff0000);
+    border-color: var(--red, #ff0000);
+    transform: scale(1.2);
+}
+
+/* Navigation Arrows */
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s;
+    z-index: 10;
+}
+
+.slider-arrow:hover {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.slider-arrow.prev {
+    left: 10px;
+}
+
+.slider-arrow.next {
+    right: 10px;
 }
 
 /* ================= DESCRIPTION ================= */
@@ -141,7 +190,6 @@
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
-    .project-slider,
     .project-slide img {
         height: 260px;
     }
@@ -153,6 +201,12 @@
     .project-actions {
         flex-direction: column;
         align-items: flex-start;
+    }
+
+    .slider-arrow {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
     }
 }
 </style>
@@ -169,7 +223,7 @@
             <h3 class="project-title">{{ project.title }}</h3>
 
             <!-- Image Slider -->
-            <div class="project-slider">
+            <div class="project-slider" data-slider-id="{{ loop.index }}">
                 <div class="project-slider-track">
                     {% for image in project.images %}
                     <div class="project-slide">
@@ -177,6 +231,20 @@
                     </div>
                     {% endfor %}
                 </div>
+
+                <!-- Navigation Arrows -->
+                {% if project.images|length > 1 %}
+                <button class="slider-arrow prev" onclick="moveSlide({{ loop.index }}, -1)">&#10094;</button>
+                <button class="slider-arrow next" onclick="moveSlide({{ loop.index }}, 1)">&#10095;</button>
+
+                <!-- Dots Indicator -->
+                <div class="slider-controls">
+                    {% for image in project.images %}
+                    <span class="slider-dot {% if loop.index == 1 %}active{% endif %}" 
+                          onclick="goToSlide({{ loop.index0 }}, {{ loop.index }})"></span>
+                    {% endfor %}
+                </div>
+                {% endif %}
             </div>
 
             <p class="project-description">
@@ -201,4 +269,90 @@
         {% endfor %}
     </div>
 </section>
+
+<script>
+// Store current slide index for each slider
+const sliderStates = {};
+
+// Initialize all sliders
+document.addEventListener('DOMContentLoaded', function() {
+    const sliders = document.querySelectorAll('.project-slider');
+    
+    sliders.forEach((slider, index) => {
+        const sliderId = slider.getAttribute('data-slider-id');
+        const slides = slider.querySelectorAll('.project-slide');
+        
+        if (slides.length > 1) {
+            sliderStates[sliderId] = {
+                currentIndex: 0,
+                totalSlides: slides.length,
+                autoPlayInterval: null
+            };
+            
+            // Start autoplay
+            startAutoPlay(sliderId);
+            
+            // Pause on hover
+            slider.addEventListener('mouseenter', () => stopAutoPlay(sliderId));
+            slider.addEventListener('mouseleave', () => startAutoPlay(sliderId));
+        }
+    });
+});
+
+function startAutoPlay(sliderId) {
+    stopAutoPlay(sliderId); // Clear any existing interval
+    
+    sliderStates[sliderId].autoPlayInterval = setInterval(() => {
+        moveSlide(sliderId, 1);
+    }, 2000); // Change slide every 3 seconds
+}
+
+function stopAutoPlay(sliderId) {
+    if (sliderStates[sliderId] && sliderStates[sliderId].autoPlayInterval) {
+        clearInterval(sliderStates[sliderId].autoPlayInterval);
+    }
+}
+
+function moveSlide(sliderId, direction) {
+    const state = sliderStates[sliderId];
+    if (!state) return;
+    
+    state.currentIndex += direction;
+    
+    // Loop around
+    if (state.currentIndex >= state.totalSlides) {
+        state.currentIndex = 0;
+    } else if (state.currentIndex < 0) {
+        state.currentIndex = state.totalSlides - 1;
+    }
+    
+    updateSlider(sliderId);
+}
+
+function goToSlide(slideIndex, sliderId) {
+    const state = sliderStates[sliderId];
+    if (!state) return;
+    
+    state.currentIndex = slideIndex;
+    updateSlider(sliderId);
+    
+    // Restart autoplay after manual navigation
+    startAutoPlay(sliderId);
+}
+
+function updateSlider(sliderId) {
+    const slider = document.querySelector(`[data-slider-id="${sliderId}"]`);
+    const track = slider.querySelector('.project-slider-track');
+    const dots = slider.querySelectorAll('.slider-dot');
+    const state = sliderStates[sliderId];
+    
+    // Move the slider
+    track.style.transform = `translateX(-${state.currentIndex * 100}%)`;
+    
+    // Update dots
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === state.currentIndex);
+    });
+}
+</script>
 {% endblock %}
